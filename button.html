@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Example</title>
+    <style>
+        #menuContainer, #calculationContainer {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Open Menu Button -->
+    <button id="openMenuBtn">Open Menu</button>
+
+    <!-- Menu Container -->
+    <div id="menuContainer">
+        <ul id="menuList"></ul>
+        <form id="menuForm">
+            <label for="menuNumber">Enter menu number: </label>
+            <input type="number" id="menuNumber" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- Calculation Container -->
+    <div id="calculationContainer">
+        <div id="factorialInput" style="display: none;">
+            <label for="factorialNumber">Enter a number for factorial: </label>
+            <input type="number" id="factorialNumber" required>
+            <button onclick="calculateFactorial()">Calculate Factorial</button>
+        </div>
+        <div id="triangleInput" style="display: none;">
+            <label for="triangleNumber">Enter a number for triangle number: </label>
+            <input type="number" id="triangleNumber" required>
+            <button onclick="calculateTriangleNumber()">Calculate Triangle Number</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const menuArray = ["1. Factorial", "2. Triangle number", "0. Exit"];
+        const openMenuBtn = document.getElementById('openMenuBtn');
+        const menuContainer = document.getElementById('menuContainer');
+        const menuList = document.getElementById('menuList');
+        const menuForm = document.getElementById('menuForm');
+        const menuNumberInput = document.getElementById('menuNumber');
+        const calculationContainer = document.getElementById('calculationContainer');
+        const factorialInput = document.getElementById('factorialInput');
+        const triangleInput = document.getElementById('triangleInput');
+        const resultDiv = document.getElementById('result');
+
+        // Display the menu when the Open Menu button is clicked
+        openMenuBtn.addEventListener('click', () => {
+            menuContainer.style.display = 'block';
+            menuList.innerHTML = menuArray.map(item => `<li>${item}</li>`).join('');
+        });
+
+        // Handle form submission for the menu number
+        menuForm.addEventListener('submit', event => {
+            event.preventDefault();
+            const menuNumber = parseInt(menuNumberInput.value);
+            menuContainer.style.display = 'none';
+            calculationContainer.style.display = 'block';
+
+            if (menuNumber === 1) {
+                showFactorialInput();
+            } else if (menuNumber === 2) {
+                showTriangleInput();
+            } else if (menuNumber === 0) {
+                exitMenu();
+            } else {
+                alert('Invalid menu number!');
+                showMenu();
+            }
+        });
+
+        function showMenu() {
+            menuContainer.style.display = 'block';
+            calculationContainer.style.display = 'none';
+            menuNumberInput.value = '';
+            resultDiv.innerHTML = '';
+        }
+
+        function showFactorialInput() {
+            factorialInput.style.display = 'block';
+            triangleInput.style.display = 'none';
+        }
+
+        function showTriangleInput() {
+            triangleInput.style.display = 'block';
+            factorialInput.style.display = 'none';
+        }
+
+        function calculateFactorial() {
+            const number = parseInt(document.getElementById('factorialNumber').value);
+            if (isNaN(number)) {
+                alert('Please enter a valid number');
+                return;
+            }
+            const factorial = (n) => n === 0 ? 1 : n * factorial(n - 1);
+            resultDiv.innerHTML = `Factorial of ${number} is ${factorial(number)}`;
+            hideInputBoxes();
+        }
+
+        function calculateTriangleNumber() {
+            const number = parseInt(document.getElementById('triangleNumber').value);
+            if (isNaN(number)) {
+                alert('Please enter a valid number');
+                return;
+            }
+            const triangleNumber = (n) => n * (n + 1) / 2;
+            resultDiv.innerHTML = `Triangle number of ${number} is ${triangleNumber(number)}`;
+            hideInputBoxes();
+        }
+
+        function hideInputBoxes() {
+            factorialInput.style.display = 'none';
+            triangleInput.style.display = 'none';
+            setTimeout(showMenu, 3000);
+        }
+
+        function exitMenu() {
+            alert('Exiting menu...');
+            menuContainer.style.display = 'none';
+            calculationContainer.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
